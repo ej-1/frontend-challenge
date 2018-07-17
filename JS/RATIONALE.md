@@ -1,0 +1,2 @@
+- Make it more agnostic and flexible if possible.
+- Change functions to be pure.
