@@ -3,18 +3,32 @@ const Framework = {
     const {template, data, ...args} = props;
 
     const header = document.querySelector(template);
-    document.querySelector('.content').innerHTML = header.innerHTML;
-    document.querySelector('h1').innerHTML = data.title;
+    const newHeader = replaceTitleVariables(header.innerHTML, data.title)
 
-    const clearButton = document.querySelector("[data-event='click:clearTitle']");
-    const input = document.querySelector('#title');
+    document.querySelector('.content').innerHTML = newHeader; // .content should be send in as arg.
 
-    input.value = data.title;
-    input.addEventListener(parseEvent(input), args.titleChanged);
-    clearButton.addEventListener(parseEvent(clearButton), args.clearTitle);
+    const functionNames = Object.keys(args);
+    addEventListeners(document, functionNames, args); // make args more explicit or don't send it in at all.
   }
 }
 
 const parseEvent = (element) => {
   return element.dataset.event.split(":")[0];
 }
+
+const replaceTitleVariables = (html, title) => { // rewrite later to pure function.
+  return html.replace(/{{title}}/g, title);
+}
+
+const addEventListeners = (document, functionNames, args) => { // rewrite later to pure function.
+  functionNames.forEach((functionName) =>  {
+    let element = document.querySelector(`[data-event*='${functionName}']`);
+    element.addEventListener(parseEvent(element), args[functionName]);
+  });
+}
+
+module.exports = {
+  parseEvent,
+  replaceTitleVariables,
+  addEventListeners
+};
