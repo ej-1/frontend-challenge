@@ -10,7 +10,11 @@ const Framework = {
     const input = document.querySelector('#title');
 
     input.value = data.title;
-    input.addEventListener("keyup", args.titleChanged);
-    clearButton.addEventListener("click", args.clearTitle);
+    input.addEventListener(parseEvent(input), args.titleChanged);
+    clearButton.addEventListener(parseEvent(clearButton), args.clearTitle);
   }
+}
+
+const parseEvent = (element) => {
+  return element.dataset.event.split(":")[0];
 }
